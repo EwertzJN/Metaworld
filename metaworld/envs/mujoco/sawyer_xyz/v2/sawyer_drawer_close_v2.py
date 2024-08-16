@@ -23,8 +23,8 @@ class SawyerDrawerCloseEnvV2(SawyerXYZEnv):
     ) -> None:
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
-        obj_low = (-0.1, 0.9, 0.0)
-        obj_high = (0.1, 0.9, 0.0)
+        obj_low = (-0.3, 0.75, 0.0)
+        obj_high = (0.3, 0.85, 0.0)
 
         super().__init__(
             hand_low=hand_low,

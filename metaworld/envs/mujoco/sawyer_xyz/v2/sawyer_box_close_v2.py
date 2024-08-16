@@ -22,10 +22,10 @@ class SawyerBoxCloseEnvV2(SawyerXYZEnv):
     ) -> None:
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
-        obj_low = (-0.05, 0.5, 0.02)
-        obj_high = (0.05, 0.55, 0.02)
-        goal_low = (-0.1, 0.7, 0.133)
-        goal_high = (0.1, 0.8, 0.133)
+        obj_low = (-0.3, 0.5, 0.02)
+        obj_high = (0.3, 0.8, 0.02)
+        goal_low = (-0.3, 0.5, 0.133)
+        goal_high = (0.3, 0.8, 0.133)
 
         super().__init__(
             hand_low=hand_low,

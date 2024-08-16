@@ -23,10 +23,10 @@ class SawyerHammerEnvV2(SawyerXYZEnv):
     ) -> None:
         hand_low = (-0.5, 0.40, 0.05)
         hand_high = (0.5, 1, 0.5)
-        obj_low = (-0.1, 0.4, 0.0)
-        obj_high = (0.1, 0.5, 0.0)
-        goal_low = (0.2399, 0.7399, 0.109)
-        goal_high = (0.2401, 0.7401, 0.111)
+        obj_low = (-0.2, 0.4, 0.0)
+        obj_high = (0.2, 0.5, 0.0)
+        goal_low = (0.1, 0.8, 0.109)
+        goal_high = (0.3, 0.85, 0.111)
 
         super().__init__(
             hand_low=hand_low,
@@ -47,7 +47,9 @@ class SawyerHammerEnvV2(SawyerXYZEnv):
         self.nail_init_pos: npt.NDArray[Any] | None = None
 
         self._random_reset_space = Box(
-            np.array(obj_low), np.array(obj_high), dtype=np.float64
+            np.hstack((obj_low, goal_low)),
+            np.hstack((obj_high, goal_high)),
+            dtype=np.float64
         )
         self.goal_space = Box(np.array(goal_low), np.array(goal_high), dtype=np.float64)
 
@@ -102,14 +104,17 @@ class SawyerHammerEnvV2(SawyerXYZEnv):
     def reset_model(self) -> npt.NDArray[np.float64]:
         self._reset_hand()
 
-        # Set position of box & nail (these are not randomized)
-        self.model.body("box").pos = np.array([0.24, 0.85, 0.0])
-        # Update _target_pos
-        self._target_pos = self._get_site_pos("goal")
+        # Randomize hammer and nail box position
+        pos = self._get_state_rand_vec()
 
-        # Randomize hammer position
-        self.hammer_init_pos = self._get_state_rand_vec()
-        self.nail_init_pos = self._get_site_pos("nailHead")
+        # Set position of box & nail
+        self.model.body("box").pos = np.array([pos[3], pos[4], 0.0])
+        # Update _target_pos
+        self._target_pos = np.array([pos[3], pos[4] - 0.11, -0.11])
+
+        # Set hammer position
+        self.hammer_init_pos = pos[:3]
+        self.nail_init_pos = np.array([pos[3], pos[4] - 0.215, -0.11])
         self.obj_init_pos = self.hammer_init_pos.copy()
         self._set_hammer_xyz(self.hammer_init_pos)
         return self._get_obs()
