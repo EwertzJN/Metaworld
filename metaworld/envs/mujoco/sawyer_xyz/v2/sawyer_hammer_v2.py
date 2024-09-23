@@ -110,11 +110,11 @@ class SawyerHammerEnvV2(SawyerXYZEnv):
         # Set position of box & nail
         self.model.body("box").pos = np.array([pos[3], pos[4], 0.0])
         # Update _target_pos
-        self._target_pos = np.array([pos[3], pos[4] - 0.11, -0.11])
+        self._target_pos = np.array([pos[3], pos[4] - 0.11, 0.11])
 
         # Set hammer position
         self.hammer_init_pos = pos[:3]
-        self.nail_init_pos = np.array([pos[3], pos[4] - 0.215, -0.11])
+        self.nail_init_pos = np.array([pos[3], pos[4] - 0.215, 0.11])
         self.obj_init_pos = self.hammer_init_pos.copy()
         self._set_hammer_xyz(self.hammer_init_pos)
         return self._get_obs()
